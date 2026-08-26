@@ -1,0 +1,30 @@
+name: User Story
+description: A story that delivers user-facing value, one per pull request
+title: '[Story]: '
+labels: ['story']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What does this story deliver, and to whom?
+      placeholder: As a [user], I want [capability], so that [benefit].
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What has to be true for this to be done? List as checkboxes.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Relevant decision records, links, or context (optional)
+    validations:
+      required: false
