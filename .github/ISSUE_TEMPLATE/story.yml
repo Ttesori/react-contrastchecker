@@ -1,7 +1,7 @@
 name: User Story
 description: A story that delivers user-facing value, one per pull request
-title: '[Story]: '
-labels: ['story']
+title: "[Story]: "
+labels: ["story"]
 body:
   - type: textarea
     id: description
