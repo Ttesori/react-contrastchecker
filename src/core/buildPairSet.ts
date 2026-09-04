@@ -1,8 +1,14 @@
 import Color from "colorjs.io";
 
-type ColorPair = {
-  foreground: Color;
-  background: Color;
+export type ColorPair = {
+  foreground: {
+    color: Color;
+    isBrandColor: boolean;
+  };
+  background: {
+    color: Color;
+    isBrandColor: boolean;
+  };
 };
 
 function isSameColor(a: Color, b: Color): boolean {
@@ -36,13 +42,23 @@ export function buildPairSet(userColors: Color[]): ColorPair[] {
       if (!aFromUser && !bFromUser) {
         //skip
       } else {
+        const colorAObj = {
+          color: colorA,
+          isBrandColor: aFromUser,
+        };
+        const colorBObj = {
+          color: colorB,
+          isBrandColor: bFromUser,
+        };
+
         colorResults.push({
-          foreground: colorA,
-          background: colorB,
+          foreground: colorAObj,
+          background: colorBObj,
         });
+
         colorResults.push({
-          foreground: colorB,
-          background: colorA,
+          foreground: colorBObj,
+          background: colorAObj,
         });
       }
     }
