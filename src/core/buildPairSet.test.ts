@@ -1,18 +1,15 @@
 // src/core/buildPairSet.test.ts
 import { describe, expect, it } from "vitest";
 import Color from "colorjs.io";
-import { buildPairSet } from "./buildPairSet";
+import { buildPairSet, ColorPair } from "./buildPairSet";
 
 function toHex(color: Color): string {
   return color.toString({ format: "hex" });
 }
 
-function isBlackWhitePair(pair: {
-  foreground: Color;
-  background: Color;
-}): boolean {
-  const fg = toHex(pair.foreground);
-  const bg = toHex(pair.background);
+function isBlackWhitePair(pair: ColorPair): boolean {
+  const fg = toHex(pair.foreground.color);
+  const bg = toHex(pair.background.color);
   return (fg === "#000" && bg === "#fff") || (fg === "#fff" && bg === "#000");
 }
 
