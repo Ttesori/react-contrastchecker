@@ -1,7 +1,8 @@
 // src/core/buildPairSet.test.ts
 import { describe, expect, it } from "vitest";
 import Color from "colorjs.io";
-import { buildPairSet, ColorPair } from "./buildPairSet";
+import { buildPairSet } from "./buildPairSet";
+import { ColorPair } from "./types";
 
 function toHex(color: Color): string {
   return color.toString({ format: "hex" });
