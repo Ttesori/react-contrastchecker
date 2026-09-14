@@ -1,19 +1,7 @@
 import Color from "colorjs.io";
+import { isSameColor } from "./utils";
+import type { ColorPair } from "./types";
 
-export type ColorPair = {
-  foreground: {
-    color: Color;
-    isBrandColor: boolean;
-  };
-  background: {
-    color: Color;
-    isBrandColor: boolean;
-  };
-};
-
-function isSameColor(a: Color, b: Color): boolean {
-  return a.toString({ format: "hex" }) === b.toString({ format: "hex" });
-}
 function isInGivenColors(a: Color, givenColors: Color[]): boolean {
   return givenColors.some((color) => isSameColor(a, color));
 }
