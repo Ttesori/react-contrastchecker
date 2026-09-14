@@ -2,7 +2,7 @@ import Color from "colorjs.io";
 import type { ColorPair } from "./types";
 import { isSameColor } from "./utils";
 
-type ColorDecision = {
+export type ColorDecision = {
   side: keyof ColorPair; // 'foreground' | 'background'
   direction: "lighter" | "darker";
 };
