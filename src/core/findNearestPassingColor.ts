@@ -2,72 +2,65 @@ import Color from "colorjs.io";
 import type { ColorDecision } from "./colorDecision";
 import type { ColorPair } from "./types";
 
-export type CoarseResult = {
-  found: boolean;
-  bracket: Color[];
-};
+export type SearchResult = { found: boolean; newColor: Color | null };
 
-export function coarsePass(
+export function findNearestPassingColor(
   pair: ColorPair,
   decision: ColorDecision,
   targetRatio: number,
-): CoarseResult {
+): SearchResult {
   // Get colors from pair
   const movingSide: Color = new Color(pair[decision.side].color);
   const anchorSide: Color =
     pair[decision.side === "background" ? "foreground" : "background"].color;
 
-  // Constant for coarse refinement
-  const COARSE: number = decision.direction === "lighter" ? 0.05 : -0.05; // fixed coarse step size
-  const lightness = movingSide.get("oklch.l");
+  // Check initial ratio, if too low return false
+  if (movingSide.contrast(anchorSide, "WCAG21") < 2) {
+    return { found: false, newColor: null };
+  }
+
+  const STEP: number = decision.direction === "lighter" ? 0.005 : -0.005; // fixed step size
+  const lightness = movingSide.get("oklch.l"); // Current lightness
 
   let currentColor = new Color(movingSide); // the color we're manipulating
 
-  for (let i = lightness; i > 0; i += COARSE) {
-    const prevColor = new Color(currentColor);
-    const nextL = prevColor.get("oklch.l") + COARSE;
+  // Loop through, changing the lightness each time
+  for (let i = lightness; i > 0; i += STEP) {
+    const prevColor = currentColor.clone(); // Save starting color
+    const nextL = prevColor.get("oklch.l") + STEP; // get next lightness value
 
+    // If next L is below zero or greater than 1, it's out of range so return false
     if (nextL < 0 || nextL > 1) {
-      return { found: false, bracket: [] };
+      return { found: false, newColor: null };
     }
 
-    const newColor = currentColor.set("oklch.l", nextL);
+    const newColor = currentColor.set("oklch.l", nextL); // generate new color
+    const currentRatio = newColor.contrast(anchorSide, "WCAG21"); // check new ratio
 
-    const currentRatio = newColor.contrast(anchorSide, "WCAG21");
-    console.log(newColor.toString({ format: "hex" }), currentRatio);
-
+    // If current ratio is greater than target ratio, return colors
     if (currentRatio >= targetRatio) {
       return {
         found: true,
-        bracket: [prevColor, newColor],
+        newColor: newColor,
       };
     }
-    currentColor = newColor;
+
+    // If we haven't achieved the target ratio, set currentColor to newColor and loop again
+    currentColor = new Color(newColor);
   }
 
+  // If we finish the loop without finding a match, return false
   return {
     found: false,
-    bracket: [],
+    newColor: null,
   };
 }
 
-const testPair: ColorPair = {
-  foreground: {
-    color: new Color("#666"),
-    isBrandColor: true,
-  },
-  background: {
-    color: new Color("#aaa"),
-    isBrandColor: true,
-  },
-};
-const testDecision: ColorDecision = {
-  side: "foreground",
-  direction: "darker",
-};
+// const pair: ColorPair = {
+//   foreground: { color: new Color("#BBE048"), isBrandColor: true },
+//   background: { color: new Color("#0396AA"), isBrandColor: true },
+// };
+// const decision: ColorDecision = { side: "foreground", direction: "lighter" };
+// const result = findNearestPassingColor(pair, decision, 3.0);
 
-const result = coarsePass(testPair, testDecision, 3);
-const resultHexA = result.bracket[0].toString({ format: "hex" });
-const startingColor = testPair.foreground.color.toString({ format: "hex" });
-const colorBkg = testPair.background.color.toString({ format: "hex" });
-console.log(resultHexA, startingColor, colorBkg);
+// console.log(result.newColor?.toString({ format: "hex" }));
