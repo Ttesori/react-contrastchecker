@@ -1,11 +1,6 @@
 import Color from "colorjs.io";
-import type { ColorPair } from "./types";
+import type { ColorPair, ColorDecision } from "./types";
 import { isSameColor } from "./utils";
-
-export type ColorDecision = {
-  side: keyof ColorPair; // 'foreground' | 'background'
-  direction: "lighter" | "darker";
-};
 
 const BLACK = new Color("#000000");
 const WHITE = new Color("#ffffff");
