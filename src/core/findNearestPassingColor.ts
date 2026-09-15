@@ -1,6 +1,5 @@
 import Color from "colorjs.io";
-import type { ColorDecision } from "./colorDecision";
-import type { ColorPair } from "./types";
+import type { ColorPair, ColorDecision } from "./types";
 
 export type SearchResult = { found: boolean; newColor: Color | null };
 
@@ -34,7 +33,9 @@ export function findNearestPassingColor(
       return { found: false, newColor: null };
     }
 
-    const newColor = currentColor.set("oklch.l", nextL); // generate new color
+    const newColor = currentColor.clone();
+    newColor.set("oklch.l", nextL); // move lightness
+    newColor.toGamut({ space: "srgb" }); // gamut map to sRGB
     const currentRatio = newColor.contrast(anchorSide, "WCAG21"); // check new ratio
 
     // If current ratio is greater than target ratio, return colors
@@ -46,7 +47,7 @@ export function findNearestPassingColor(
     }
 
     // If we haven't achieved the target ratio, set currentColor to newColor and loop again
-    currentColor = new Color(newColor);
+    currentColor = newColor.clone();
   }
 
   // If we finish the loop without finding a match, return false
