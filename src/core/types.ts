@@ -10,3 +10,8 @@ export type ColorPair = {
     isBrandColor: boolean;
   };
 };
+
+export type ColorDecision = {
+  side: keyof ColorPair; // 'foreground' | 'background'
+  direction: "lighter" | "darker";
+};
