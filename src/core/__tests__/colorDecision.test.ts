@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import Color from "colorjs.io";
-import { decideColorMove } from "./colorDecision";
-import type { ColorPair } from "./types";
+import { decideColorMove } from "../colorDecision";
+import type { ColorPair } from "../types";
 
 function makePair(
   fgHex: string,

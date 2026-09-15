@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import Color from "colorjs.io";
-import { findNearestPassingColor } from "./findNearestPassingColor";
-import type { ColorPair, ColorDecision } from "./types";
+import { findNearestPassingColor } from "../findNearestPassingColor";
+import type { ColorPair, ColorDecision } from "../types";
 
 function makePair(
   fgHex: string,

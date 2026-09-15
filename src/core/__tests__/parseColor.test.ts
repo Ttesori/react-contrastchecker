@@ -1,6 +1,6 @@
 // src/core/parseColor.test.ts
 import { describe, expect, it } from "vitest";
-import { parseColor } from "./parseColor";
+import { parseColor } from "../parseColor";
 
 describe("parseColor", () => {
   it("parses a valid hex color", () => {

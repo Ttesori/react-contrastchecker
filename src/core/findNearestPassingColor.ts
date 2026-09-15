@@ -1,7 +1,8 @@
 import Color from "colorjs.io";
 import type { ColorPair, ColorDecision } from "./types";
 
-export type SearchResult = { found: boolean; newColor: Color | null };
+export type SearchResult =
+  { found: true; newColor: Color } | { found: false; newColor: null };
 
 export function findNearestPassingColor(
   pair: ColorPair,
@@ -56,12 +57,3 @@ export function findNearestPassingColor(
     newColor: null,
   };
 }
-
-// const pair: ColorPair = {
-//   foreground: { color: new Color("#BBE048"), isBrandColor: true },
-//   background: { color: new Color("#0396AA"), isBrandColor: true },
-// };
-// const decision: ColorDecision = { side: "foreground", direction: "lighter" };
-// const result = findNearestPassingColor(pair, decision, 3.0);
-
-// console.log(result.newColor?.toString({ format: "hex" }));
