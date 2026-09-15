@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import Color from "colorjs.io";
-import { computeContrastRatio } from "./computeContrastRatio";
+import { computeContrastRatio } from "../computeContrastRatio";
 
 describe("computeContrastRatio", () => {
   it("returns 21 for black against white", () => {

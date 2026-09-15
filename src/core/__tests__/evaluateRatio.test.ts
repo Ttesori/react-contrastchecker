@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { evaluateRatio } from "./evaluateRatio";
+import { evaluateRatio } from "../evaluateRatio";
 
 describe("evaluateRatio", () => {
   it("passes all three thresholds when the ratio is well above body text's", () => {
