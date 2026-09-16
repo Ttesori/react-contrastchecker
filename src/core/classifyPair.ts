@@ -1,24 +1,7 @@
-import Color from "colorjs.io";
-import type { ColorPair } from "./types";
-import { computeContrastRatio } from "./utils";
+import type { ColorPair, PairClassification } from "./types";
+import { computeContrastRatio, RATIOS } from "./utils";
 import { decideColorMove } from "./colorDecision";
 import { findNearestPassingColor } from "./findNearestPassingColor";
-
-type ThresholdResult =
-  | { tier: "as-is" }
-  | { tier: "has-fix"; nearestPassing: Color }
-  | { tier: "no-fix" };
-
-type PairClassification = {
-  ratio: number;
-  AA_body: ThresholdResult;
-  AA_large: ThresholdResult;
-};
-
-const RATIOS = {
-  AA_body: 4.5,
-  AA_large: 3.0,
-};
 
 export function classifyPair(pair: ColorPair): PairClassification {
   const ratio = computeContrastRatio(
@@ -29,6 +12,7 @@ export function classifyPair(pair: ColorPair): PairClassification {
 
   const result: PairClassification = {
     ratio,
+    pair,
     AA_body: { tier: "no-fix" },
     AA_large: { tier: "no-fix" },
   };
