@@ -26,7 +26,7 @@
   --status-warning: #b9985a;
 
   /* Supporting information panel */
-  --info-panel-bg: rgba(31, 43, 55, 0.72);
+  --info-panel-bg: rgba(219, 229, 237, 0.05);
   --info-panel-border: rgba(219, 229, 237, 0.13);
   --info-heading: #e7eef4;
   --info-text: #b7c4cf;
@@ -44,6 +44,7 @@
 }
 
 body {
+  margin: 0;
   font-family: var(--font-body);
 }
 
@@ -51,4 +52,20 @@ h1,
 h2,
 h3 {
   font-family: var(--font-heading);
+}
+
+* {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.15s ease-in-out;
+}
+
+:focus-visible {
+  outline-color: var(--accent-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none;
+  }
 }
