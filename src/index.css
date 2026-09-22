@@ -1,0 +1,54 @@
+:root {
+  /* Background */
+  --background-top: #203040;
+  --background-bottom: #18232f;
+  --background-glow: rgba(93, 124, 156, 0.28);
+
+  /* Surfaces */
+  --surface-primary: #f4f6f8;
+  --surface-secondary: #fafbfc;
+  --surface-input: #ffffff;
+
+  /* Accent */
+  --accent-primary: #314356;
+  --brand-on-dark: #eef4f7;
+
+  /* Text */
+  --text-primary: #1f2932;
+  --text-section: #24303b;
+  --text-body: #425464;
+  --text-muted: #697786;
+
+  /* Borders */
+  --border-default: #d7dee5;
+
+  /* Semantic */
+  --status-warning: #b9985a;
+
+  /* Supporting information panel */
+  --info-panel-bg: rgba(31, 43, 55, 0.72);
+  --info-panel-border: rgba(219, 229, 237, 0.13);
+  --info-heading: #e7eef4;
+  --info-text: #b7c4cf;
+
+  /* Radius scale */
+  --radius-lg: 20px;
+  --radius-md-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --radius-swatch: 6px;
+
+  /* Typography */
+  --font-heading: "Lora", serif;
+  --font-body: "Lato", sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+}
