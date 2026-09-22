@@ -22,12 +22,14 @@ Google Fonts only.
 ### Font families
 
 **Lora**
+
 - Brand name / wordmark
 - Main page and result headings
 - Section headings
 - Large primary action labels, such as `Check Contrast` and `Check Another Pair`
 
 **Lato**
+
 - Body copy
 - Inputs
 - Utility labels
@@ -40,9 +42,11 @@ Google Fonts only.
 ### Weight guidance
 
 **Lora**
+
 - 600–700 for headings and buttons
 
 **Lato**
+
 - 400 for body copy
 - 700 for supporting emphasis
 - 900 for small utility headings or controls when stronger emphasis is needed
@@ -69,7 +73,7 @@ The app sits on a dark storm-blue background.
 
 ```css
 --background-top: #203040;
---background-bottom: #18232F;
+--background-bottom: #18232f;
 ```
 
 A subtle blue glow may be layered into the background:
@@ -83,19 +87,20 @@ The glow should remain subtle. It adds depth, not a visible decorative effect.
 ### Primary surfaces
 
 ```css
---surface-primary: #F4F6F8;
---surface-secondary: #FAFBFC;
---surface-input: #FFFFFF;
+--surface-primary: #f4f6f8;
+--surface-secondary: #fafbfc;
+--surface-input: #ffffff;
 ```
 
 ### Accent
 
 ```css
 --accent-primary: #314356;
---brand-on-dark: #EEF4F7;
+--brand-on-dark: #eef4f7;
 ```
 
 `--accent-primary` is used for:
+
 - Primary buttons
 - Numbered step circles
 - Strong interface emphasis
@@ -104,8 +109,8 @@ The glow should remain subtle. It adds depth, not a visible decorative effect.
 ### Text
 
 ```css
---text-primary: #1F2932;
---text-section: #24303B;
+--text-primary: #1f2932;
+--text-section: #24303b;
 --text-body: #425464;
 --text-muted: #697786;
 ```
@@ -113,7 +118,7 @@ The glow should remain subtle. It adds depth, not a visible decorative effect.
 ### Borders and dividers
 
 ```css
---border-default: #D7DEE5;
+--border-default: #d7dee5;
 ```
 
 Borders should be thin and quiet. Avoid adding boxes unless they improve grouping or hierarchy.
@@ -129,7 +134,7 @@ Use a muted amber for the warning icon on the "So close" result.
 Current direction:
 
 ```css
---status-warning: #B9985A;
+--status-warning: #b9985a;
 ```
 
 The exact amber can be tuned slightly during implementation, but it should remain muted and compatible with the storm-blue palette.
@@ -149,8 +154,8 @@ The three explanatory questions on the home screen sit **outside** the light too
 ```css
 --info-panel-bg: rgba(31, 43, 55, 0.72);
 --info-panel-border: rgba(219, 229, 237, 0.13);
---info-heading: #E7EEF4;
---info-text: #B7C4CF;
+--info-heading: #e7eef4;
+--info-text: #b7c4cf;
 ```
 
 This panel may be wider than the main light tool card.
@@ -216,7 +221,7 @@ Steps 1–3 use dark filled circles:
 
 ```css
 background: #314356;
-color: #FFFFFF;
+color: #ffffff;
 ```
 
 They should remain visually understated enough that they do not look like interactive wizard controls.
@@ -288,10 +293,11 @@ Primary buttons use:
 
 ```css
 background: #314356;
-color: #FFFFFF;
+color: #ffffff;
 ```
 
 Current visual direction:
+
 - Medium radius
 - Strong but not oversized
 - Large primary actions such as `Check Contrast` and `Check Another Pair` use Lora
@@ -325,6 +331,7 @@ Desktop mockups establish hierarchy, not fixed dimensions.
 ### Home
 
 On smaller screens:
+
 - Stack Color 1 and Color 2 vertically
 - Primary button may become full width
 - Supporting three-column panel becomes a vertical list
@@ -333,6 +340,7 @@ On smaller screens:
 ### Results
 
 On smaller screens:
+
 - Step 1 pair preview and contrast details stack
 - Step 2 becomes sequential:
   1. original → suggested
@@ -359,13 +367,12 @@ Do not shrink text excessively to preserve desktop composition.
 
 ## 17. Design references
 
-The latest Figma mockups establish the intended visual direction for:
+Hi-fi mockups exported to /design are the source of truth for visual direction. Figma is used for active design work, but the exported files in the repo are what implementation should reference.
 
-- Home / initial input state
-- Full-pass result
-- Nearby full-fix result ("So close")
-- Partial improvement result
-- Larger adjustment result
+Current exports cover:
+
+- Home / initial input state [design/DesktopHome.png]
+- Nearby full-fix result ("So close") [design/DesktopSoClose.png]
 
 The mockups are references for hierarchy and visual language, not exact pixel specifications.
 
