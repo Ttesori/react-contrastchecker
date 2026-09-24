@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { checkColors } from "../checkColors";
+import { INVALID_COLOR_MESSAGE } from "../parseColor";
 
 describe("checkColors", () => {
   it("returns valid: true with classified results when both colors are valid", () => {
@@ -21,9 +22,7 @@ describe("checkColors", () => {
 
     expect(output.valid).toBe(false);
     if (!output.valid) {
-      expect(output.errors.color1).toBe(
-        `"not-a-color" isn't a valid color. Try hex, rgb, or hsl.`,
-      );
+      expect(output.errors.color1).toBe(INVALID_COLOR_MESSAGE);
       expect(output.errors.color2).toBeUndefined();
     }
   });
@@ -33,9 +32,7 @@ describe("checkColors", () => {
 
     expect(output.valid).toBe(false);
     if (!output.valid) {
-      expect(output.errors.color2).toBe(
-        `"not-a-color" isn't a valid color. Try hex, rgb, or hsl.`,
-      );
+      expect(output.errors.color2).toBe(INVALID_COLOR_MESSAGE);
       expect(output.errors.color1).toBeUndefined();
     }
   });
@@ -45,12 +42,8 @@ describe("checkColors", () => {
 
     expect(output.valid).toBe(false);
     if (!output.valid) {
-      expect(output.errors.color1).toBe(
-        `"not-a-color" isn't a valid color. Try hex, rgb, or hsl.`,
-      );
-      expect(output.errors.color2).toBe(
-        `"also-not-a-color" isn't a valid color. Try hex, rgb, or hsl.`,
-      );
+      expect(output.errors.color1).toBe(INVALID_COLOR_MESSAGE);
+      expect(output.errors.color2).toBe(INVALID_COLOR_MESSAGE);
     }
   });
 
