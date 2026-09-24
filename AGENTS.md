@@ -207,6 +207,7 @@ Use the existing repository setup unless the developer explicitly approves a cha
 - Vite
 - npm / `package-lock.json`
 - Vitest
+- Playwright
 - ESLint
 - Prettier
 - Accessibility linting
@@ -221,7 +222,10 @@ Current default direction:
 - Do not add Tailwind or CSS-in-JS.
 - Keep the existing `src/core` layer separate from React UI code.
 
-React Testing Library may be considered later for meaningful UI interaction tests, but adding it requires an explicit discussion and approval first.
+Testing is split by layer:
+
+- `src/core` logic is covered by Vitest unit tests.
+- UI behavior is covered by Playwright end-to-end tests in `e2e/`, run in a real browser against a production build. Do not add React Testing Library or another component-testing tool without explicit discussion and approval.
 
 ### General rules
 
@@ -369,6 +373,13 @@ Do not claim a check passed unless it was actually run.
 If a check cannot be run, state that clearly.
 
 When generated values such as contrast ratios are displayed in test fixtures or examples, ensure they are mathematically consistent with the colors being shown.
+
+### End-to-end tests
+
+- Run with `npm run test:e2e`. CI runs them on every pull request.
+- Test behavior the way a user experiences it: find elements by label, role, and text (`getByLabel`, `getByRole`), not by CSS classes or component internals.
+- Check accessibility outcomes directly where it matters, e.g. `toBeFocused`, `aria-invalid`, and `toHaveAccessibleDescription`.
+- E2E tests for new UI features are written in separate test issues after the feature, not inside the feature issue.
 
 ---
 
