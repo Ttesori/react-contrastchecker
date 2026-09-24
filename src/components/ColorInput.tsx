@@ -10,7 +10,6 @@ type ColorInputProps = {
   value: string;
   onChange: (value: string) => void;
   submitAttempted: boolean;
-  hintId: string;
   ref?: Ref<HTMLInputElement>;
 };
 
@@ -52,7 +51,6 @@ function ColorInput({
   value,
   onChange,
   submitAttempted,
-  hintId,
   ref,
 }: ColorInputProps) {
   const [blurError, setBlurError] = useState<string | null>(null);
@@ -113,9 +111,7 @@ function ColorInput({
         placeholder="#000000"
         value={value}
         aria-invalid={errorMessage !== null || undefined}
-        aria-describedby={
-          errorMessage !== null ? `${errorId} ${hintId}` : hintId
-        }
+        aria-describedby={errorId}
         onChange={(event) => {
           const nextValue = event.target.value;
           if (parseColor(nextValue).valid) {

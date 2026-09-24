@@ -1,9 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { INVALID_COLOR_MESSAGE } from "../src/core/parseColor";
 
-const FORMAT_HINT = "Enter colors in HEX, RGB, or HSL format.";
-const ERROR_AND_HINT = `${INVALID_COLOR_MESSAGE} ${FORMAT_HINT}`;
-
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
@@ -30,7 +27,7 @@ test("invalid input shows an error on blur, not while typing", async ({
 
   await page.keyboard.press("Tab");
   await expect(color1).toHaveAttribute("aria-invalid", "true");
-  await expect(color1).toHaveAccessibleDescription(ERROR_AND_HINT);
+  await expect(color1).toHaveAccessibleDescription(INVALID_COLOR_MESSAGE);
 });
 
 test("the error message stays fixed while editing and clears once the value is valid", async ({
@@ -40,14 +37,13 @@ test("the error message stays fixed while editing and clears once the value is v
 
   await color1.pressSequentially("zz");
   await page.keyboard.press("Tab");
-  await expect(color1).toHaveAccessibleDescription(ERROR_AND_HINT);
+  await expect(color1).toHaveAccessibleDescription(INVALID_COLOR_MESSAGE);
 
   await color1.fill("zzqq");
-  await expect(color1).toHaveAccessibleDescription(ERROR_AND_HINT);
+  await expect(color1).toHaveAccessibleDescription(INVALID_COLOR_MESSAGE);
 
   await color1.fill("#123456");
   await expect(color1).not.toHaveAttribute("aria-invalid");
-  await expect(color1).toHaveAccessibleDescription(FORMAT_HINT);
 });
 
 test("hex input is normalized on blur", async ({ page }) => {
@@ -72,8 +68,8 @@ test("checking contrast with empty fields shows errors and focuses the first fie
   await page.getByRole("button", { name: "Check Contrast" }).click();
 
   await expect(color1).toBeFocused();
-  await expect(color1).toHaveAccessibleDescription(ERROR_AND_HINT);
-  await expect(color2).toHaveAccessibleDescription(ERROR_AND_HINT);
+  await expect(color1).toHaveAccessibleDescription(INVALID_COLOR_MESSAGE);
+  await expect(color2).toHaveAccessibleDescription(INVALID_COLOR_MESSAGE);
 });
 
 test("checking contrast focuses the first invalid field", async ({ page }) => {
