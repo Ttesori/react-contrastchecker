@@ -36,6 +36,54 @@ describe("parseColor", () => {
     }
   });
 
+  it("drops transparency from a 4-digit hex color, keeping its channels", () => {
+    const result = parseColor("#f008");
+
+    expect(result.valid).toBe(true);
+    if (result.valid) {
+      expect(result.color.alpha).toBe(1);
+      expect(result.color.get("srgb.r")).toBeCloseTo(1);
+      expect(result.color.get("srgb.g")).toBeCloseTo(0);
+      expect(result.color.get("srgb.b")).toBeCloseTo(0);
+    }
+  });
+
+  it("drops transparency from an 8-digit hex color", () => {
+    const result = parseColor("#ff000080");
+
+    expect(result.valid).toBe(true);
+    if (result.valid) {
+      expect(result.color.alpha).toBe(1);
+    }
+  });
+
+  it("drops transparency from an rgba color", () => {
+    const result = parseColor("rgba(255, 0, 0, 0.5)");
+
+    expect(result.valid).toBe(true);
+    if (result.valid) {
+      expect(result.color.alpha).toBe(1);
+    }
+  });
+
+  it("drops transparency from a space-separated rgb color with alpha", () => {
+    const result = parseColor("rgb(255 0 0 / 50%)");
+
+    expect(result.valid).toBe(true);
+    if (result.valid) {
+      expect(result.color.alpha).toBe(1);
+    }
+  });
+
+  it("drops transparency from an hsla color", () => {
+    const result = parseColor("hsla(0, 100%, 50%, 0.5)");
+
+    expect(result.valid).toBe(true);
+    if (result.valid) {
+      expect(result.color.alpha).toBe(1);
+    }
+  });
+
   it("returns a structured error for an unrecognized color, rather than throwing", () => {
     expect(() => parseColor("not-a-real-color")).not.toThrow();
 
