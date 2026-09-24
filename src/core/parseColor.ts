@@ -13,6 +13,7 @@ export function parseColor(input: unknown): ParseColorResult {
 
   try {
     const color = new Color(input.trim());
+    color.alpha = 1; // transparency isn't supported; use the opaque color
     return { valid: true, color };
   } catch {
     return {

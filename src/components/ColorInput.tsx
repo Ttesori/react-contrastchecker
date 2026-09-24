@@ -36,10 +36,13 @@ function addMissingHash(value: string): string {
   return parseColor(withHash).valid ? withHash : value;
 }
 
-const SHORT_HEX = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i;
+const SHORT_HEX = /^#([0-9a-f])([0-9a-f])([0-9a-f])[0-9a-f]?$/i;
+const HEX_WITH_ALPHA = /^#([0-9a-f]{6})[0-9a-f]{2}$/i;
 
 function normalizeHex(value: string): string {
-  return addMissingHash(value).replace(SHORT_HEX, "#$1$1$2$2$3$3");
+  return addMissingHash(value)
+    .replace(SHORT_HEX, "#$1$1$2$2$3$3")
+    .replace(HEX_WITH_ALPHA, "#$1");
 }
 
 function ColorInput({
