@@ -1,3 +1,4 @@
+import { useState, type Ref } from "react";
 import Color from "colorjs.io";
 import { parseColor } from "../core/parseColor";
 import { computeContrastRatio } from "../core/utils";
@@ -8,6 +9,8 @@ type ColorInputProps = {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  submitAttempted: boolean;
+  ref?: Ref<HTMLInputElement>;
 };
 
 const BLACK = new Color("#000000");
@@ -33,7 +36,29 @@ function addMissingHash(value: string): string {
   return parseColor(withHash).valid ? withHash : value;
 }
 
-function ColorInput({ id, label, value, onChange }: ColorInputProps) {
+const SHORT_HEX = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i;
+
+function normalizeHex(value: string): string {
+  return addMissingHash(value).replace(SHORT_HEX, "#$1$1$2$2$3$3");
+}
+
+function ColorInput({
+  id,
+  label,
+  value,
+  onChange,
+  submitAttempted,
+  ref,
+}: ColorInputProps) {
+  const [blurError, setBlurError] = useState<string | null>(null);
+  const parseResult = parseColor(value);
+  const submitError =
+    submitAttempted && !parseResult.valid && value.trim() === ""
+      ? parseResult.error
+      : null;
+  const errorMessage = blurError ?? submitError;
+  const errorId = `${id}-error`;
+
   const resolvedColor = resolveColor(value);
   const swatchHex = resolvedColor
     .toString({ format: "hex", collapse: false })
@@ -76,14 +101,35 @@ function ColorInput({ id, label, value, onChange }: ColorInputProps) {
         {label} hex value
       </label>
       <input
+        ref={ref}
         id={id}
         type="text"
         className="color-input-text"
         placeholder="#000000"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
-        onBlur={() => onChange(addMissingHash(value))}
+        aria-invalid={errorMessage !== null || undefined}
+        aria-describedby={errorMessage !== null ? errorId : undefined}
+        onChange={(event) => {
+          const nextValue = event.target.value;
+          if (parseColor(nextValue).valid) {
+            setBlurError(null);
+          }
+          onChange(nextValue);
+        }}
+        onBlur={() => {
+          const normalized = normalizeHex(value);
+          const result = parseColor(normalized);
+          setBlurError(
+            !result.valid && normalized.trim() !== "" ? result.error : null,
+          );
+          onChange(normalized);
+        }}
       />
+      {errorMessage !== null && (
+        <p id={errorId} className="color-input-error">
+          {errorMessage}
+        </p>
+      )}
     </div>
   );
 }

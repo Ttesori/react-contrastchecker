@@ -69,10 +69,6 @@
   border-radius: var(--radius-sm);
 }
 
-.app-primary-button:disabled {
-  opacity: 0.6;
-}
-
 .app-info-panel {
   width: 100%;
   max-width: 960px;
