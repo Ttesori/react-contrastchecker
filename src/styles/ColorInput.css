@@ -75,3 +75,19 @@
 .color-input-text:focus-visible {
   outline-color: var(--text-muted);
 }
+
+.color-input-text[aria-invalid="true"] {
+  border-color: var(--status-error);
+}
+
+.color-input-text[aria-invalid="true"]:focus-visible {
+  outline-color: var(--status-error);
+}
+
+.color-input-error {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--status-error);
+  overflow-wrap: anywhere;
+}

@@ -1,10 +1,24 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ColorInput from "./components/ColorInput";
+import { parseColor } from "./core/parseColor";
 import "./styles/App.css";
 
 function App() {
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const color1Ref = useRef<HTMLInputElement>(null);
+  const color2Ref = useRef<HTMLInputElement>(null);
+
+  function handleCheckContrast() {
+    setSubmitAttempted(true);
+
+    if (!parseColor(color1).valid) {
+      color1Ref.current?.focus();
+    } else if (!parseColor(color2).valid) {
+      color2Ref.current?.focus();
+    }
+  }
 
   return (
     <div className="app-page">
@@ -21,12 +35,16 @@ function App() {
             label="Color 1"
             value={color1}
             onChange={setColor1}
+            submitAttempted={submitAttempted}
+            ref={color1Ref}
           />
           <ColorInput
             id="color2"
             label="Color 2"
             value={color2}
             onChange={setColor2}
+            submitAttempted={submitAttempted}
+            ref={color2Ref}
           />
         </div>
 
@@ -34,7 +52,11 @@ function App() {
           Enter colors in HEX, RGB, or HSL format.
         </p>
 
-        <button type="button" className="app-primary-button" disabled>
+        <button
+          type="button"
+          className="app-primary-button"
+          onClick={handleCheckContrast}
+        >
           Check Contrast
         </button>
       </main>

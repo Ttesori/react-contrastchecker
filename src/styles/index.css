@@ -24,6 +24,7 @@
 
   /* Semantic */
   --status-warning: #b9985a;
+  --status-error: #b3261e;
 
   /* Supporting information panel */
   --info-panel-bg: rgba(219, 229, 237, 0.05);

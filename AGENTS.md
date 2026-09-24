@@ -399,6 +399,14 @@ Keep diffs easy to review.
 
 A reviewer should be able to understand why every changed line belongs to the current task.
 
+### Issue and branch before any work
+
+Every task starts with a GitHub issue and its own branch:
+
+1. The developer creates the issue manually on GitHub, using the Story template. The agent may draft the issue text, but does not create the issue.
+2. Once the developer shares the issue number, the agent creates the branch from an up-to-date `main`, named `<issue-number>-<issue-title-slug>` (e.g. `28-build-the-colorinput-component`).
+3. Do not edit code until both exist. If either is missing when a task starts, stop and ask for it.
+
 ---
 
 ## 16. How to respond when implementing
