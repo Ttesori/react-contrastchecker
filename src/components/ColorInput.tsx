@@ -1,6 +1,6 @@
 import { useState, type Ref } from "react";
 import Color from "colorjs.io";
-import { parseColor } from "../core/parseColor";
+import { INVALID_COLOR_MESSAGE, parseColor } from "../core/parseColor";
 import { computeContrastRatio } from "../core/utils";
 import "../styles/ColorInput.css";
 
@@ -10,6 +10,7 @@ type ColorInputProps = {
   value: string;
   onChange: (value: string) => void;
   submitAttempted: boolean;
+  hintId: string;
   ref?: Ref<HTMLInputElement>;
 };
 
@@ -51,6 +52,7 @@ function ColorInput({
   value,
   onChange,
   submitAttempted,
+  hintId,
   ref,
 }: ColorInputProps) {
   const [blurError, setBlurError] = useState<string | null>(null);
@@ -111,7 +113,9 @@ function ColorInput({
         placeholder="#000000"
         value={value}
         aria-invalid={errorMessage !== null || undefined}
-        aria-describedby={errorMessage !== null ? errorId : undefined}
+        aria-describedby={
+          errorMessage !== null ? `${errorId} ${hintId}` : hintId
+        }
         onChange={(event) => {
           const nextValue = event.target.value;
           if (parseColor(nextValue).valid) {
@@ -128,11 +132,16 @@ function ColorInput({
           onChange(normalized);
         }}
       />
-      {errorMessage !== null && (
-        <p id={errorId} className="color-input-error">
-          {errorMessage}
-        </p>
-      )}
+      <p
+        id={errorId}
+        className={
+          errorMessage !== null
+            ? "color-input-error"
+            : "color-input-error color-input-error-hidden"
+        }
+      >
+        {errorMessage ?? INVALID_COLOR_MESSAGE}
+      </p>
     </div>
   );
 }

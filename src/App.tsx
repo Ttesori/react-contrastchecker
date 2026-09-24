@@ -29,6 +29,10 @@ function App() {
           better option when they don&apos;t.
         </p>
 
+        <p id="format-hint" className="app-format-hint">
+          Enter two colors below in HEX, RGB, or HSL format.
+        </p>
+
         <div className="app-color-fields">
           <ColorInput
             id="color1"
@@ -36,6 +40,7 @@ function App() {
             value={color1}
             onChange={setColor1}
             submitAttempted={submitAttempted}
+            hintId="format-hint"
             ref={color1Ref}
           />
           <ColorInput
@@ -44,13 +49,10 @@ function App() {
             value={color2}
             onChange={setColor2}
             submitAttempted={submitAttempted}
+            hintId="format-hint"
             ref={color2Ref}
           />
         </div>
-
-        <p className="app-format-hint">
-          Enter colors in HEX, RGB, or HSL format.
-        </p>
 
         <button
           type="button"

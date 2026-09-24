@@ -85,9 +85,13 @@
 }
 
 .color-input-error {
-  margin: 0.5rem 0 0;
+  margin: 0.25rem 0 0;
   font-size: 0.875rem;
   line-height: 1.4;
   color: var(--status-error);
   overflow-wrap: anywhere;
+}
+
+.color-input-error-hidden {
+  visibility: hidden;
 }
