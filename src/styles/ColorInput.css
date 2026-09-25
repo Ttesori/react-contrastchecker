@@ -5,9 +5,16 @@
   flex-direction: column;
 }
 
+@media (max-width: 33.74em) {
+  .color-input-field {
+    flex: none;
+    width: 100%;
+  }
+}
+
 .color-input-swatch-wrapper {
   position: relative;
-  height: 170px;
+  height: 10.625rem;
   border: 1px solid var(--border-default);
   border-radius: var(--radius-swatch);
   overflow: hidden;
@@ -59,12 +66,49 @@
   width: 18px;
   height: 18px;
   pointer-events: none;
+  transition: transform 0.15s ease-in-out;
+}
+
+.color-input-swatch-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+@media (hover: hover) {
+  .color-input-swatch-wrapper:hover .color-input-swatch-hint {
+    opacity: 1;
+  }
+
+  .color-input-swatch-wrapper:hover .color-input-swatch-icon {
+    transform: scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .color-input-swatch-hint,
+  .color-input-swatch-icon {
+    transition: none;
+  }
+}
+
+.color-input-text-wrapper {
+  position: relative;
+  margin-top: 0.75rem;
 }
 
 .color-input-text {
-  margin-top: 0.75rem;
+  width: 100%;
   padding: 0.75rem 1rem;
-  font-size: 16px;
+  font-size: 1rem;
   font-family: var(--font-body);
   color: var(--text-primary);
   background-color: var(--surface-input);
@@ -85,11 +129,36 @@
 }
 
 .color-input-error {
-  margin: 0.25rem 0 0;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  width: max-content;
+  max-width: calc(100% + 1rem);
+  transform: translateX(-50%);
+  z-index: 1;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.4;
   color: var(--status-error);
+  background-color: var(--surface-input);
+  border: 1px solid var(--status-error);
+  border-radius: var(--radius-sm);
   overflow-wrap: anywhere;
+  pointer-events: none;
+}
+
+.color-input-error::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: var(--surface-input);
+  border-right: 1px solid var(--status-error);
+  border-bottom: 1px solid var(--status-error);
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .color-input-error-hidden {
