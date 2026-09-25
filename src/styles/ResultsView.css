@@ -1,0 +1,30 @@
+.results-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.results-view h2 {
+  font-size: 1.5rem;
+  color: var(--text-section);
+  margin: 0 0 1.5rem;
+}
+
+.results-view-details {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.5rem 1.5rem;
+  margin: 0 0 2rem;
+  text-align: left;
+  color: var(--text-body);
+}
+
+.results-view-details dt {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.results-view-details dd {
+  margin: 0;
+}
