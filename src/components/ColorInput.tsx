@@ -86,6 +86,13 @@ function ColorInput({
         >
           {label}
         </span>
+        <span
+          className="color-input-swatch-hint"
+          style={{ color: labelColor }}
+          aria-hidden="true"
+        >
+          Click to edit
+        </span>
         <svg
           className="color-input-swatch-icon"
           style={{ color: labelColor }}
@@ -103,41 +110,43 @@ function ColorInput({
       <label htmlFor={id} className="visually-hidden">
         {label} hex value
       </label>
-      <input
-        ref={ref}
-        id={id}
-        type="text"
-        className="color-input-text"
-        placeholder="#000000"
-        value={value}
-        aria-invalid={errorMessage !== null || undefined}
-        aria-describedby={errorId}
-        onChange={(event) => {
-          const nextValue = event.target.value;
-          if (parseColor(nextValue).valid) {
-            setBlurError(null);
+      <div className="color-input-text-wrapper">
+        <input
+          ref={ref}
+          id={id}
+          type="text"
+          className="color-input-text"
+          placeholder="#000000"
+          value={value}
+          aria-invalid={errorMessage !== null || undefined}
+          aria-describedby={errorId}
+          onChange={(event) => {
+            const nextValue = event.target.value;
+            if (parseColor(nextValue).valid) {
+              setBlurError(null);
+            }
+            onChange(nextValue);
+          }}
+          onBlur={() => {
+            const normalized = normalizeHex(value);
+            const result = parseColor(normalized);
+            setBlurError(
+              !result.valid && normalized.trim() !== "" ? result.error : null,
+            );
+            onChange(normalized);
+          }}
+        />
+        <p
+          id={errorId}
+          className={
+            errorMessage !== null
+              ? "color-input-error"
+              : "color-input-error color-input-error-hidden"
           }
-          onChange(nextValue);
-        }}
-        onBlur={() => {
-          const normalized = normalizeHex(value);
-          const result = parseColor(normalized);
-          setBlurError(
-            !result.valid && normalized.trim() !== "" ? result.error : null,
-          );
-          onChange(normalized);
-        }}
-      />
-      <p
-        id={errorId}
-        className={
-          errorMessage !== null
-            ? "color-input-error"
-            : "color-input-error color-input-error-hidden"
-        }
-      >
-        {errorMessage ?? INVALID_COLOR_MESSAGE}
-      </p>
+        >
+          {errorMessage ?? INVALID_COLOR_MESSAGE}
+        </p>
+      </div>
     </div>
   );
 }
