@@ -1,7 +1,7 @@
 import { useState, type Ref } from "react";
 import Color from "colorjs.io";
 import { INVALID_COLOR_MESSAGE, parseColor } from "../core/parseColor";
-import { computeContrastRatio } from "../core/utils";
+import { computeContrastRatio, normalizeHex } from "../core/utils";
 import "../styles/ColorInput.css";
 
 type ColorInputProps = {
@@ -27,24 +27,6 @@ function getReadableLabelColor(color: Color): string {
   return contrastWithWhite > contrastWithBlack ? "#ffffff" : "#000000";
 }
 
-function addMissingHash(value: string): string {
-  if (value.startsWith("#") || parseColor(value).valid) {
-    return value;
-  }
-
-  const withHash = `#${value}`;
-  return parseColor(withHash).valid ? withHash : value;
-}
-
-const SHORT_HEX = /^#([0-9a-f])([0-9a-f])([0-9a-f])[0-9a-f]?$/i;
-const HEX_WITH_ALPHA = /^#([0-9a-f]{6})[0-9a-f]{2}$/i;
-
-function normalizeHex(value: string): string {
-  return addMissingHash(value)
-    .replace(SHORT_HEX, "#$1$1$2$2$3$3")
-    .replace(HEX_WITH_ALPHA, "#$1");
-}
-
 function ColorInput({
   id,
   label,
@@ -56,9 +38,7 @@ function ColorInput({
   const [blurError, setBlurError] = useState<string | null>(null);
   const parseResult = parseColor(value);
   const submitError =
-    submitAttempted && !parseResult.valid && value.trim() === ""
-      ? parseResult.error
-      : null;
+    submitAttempted && !parseResult.valid ? parseResult.error : null;
   const errorMessage = blurError ?? submitError;
   const errorId = `${id}-error`;
 

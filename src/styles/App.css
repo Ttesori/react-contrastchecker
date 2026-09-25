@@ -40,6 +40,13 @@
   margin: 0 0 1rem;
 }
 
+.app-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .app-color-fields {
   width: 100%;
   display: flex;
