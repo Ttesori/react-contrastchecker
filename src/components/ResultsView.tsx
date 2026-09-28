@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
-import type Color from "colorjs.io";
 import type { PairClassification } from "../core/types";
+import ContrastDetails from "./ContrastDetails";
+import PairPreview from "./PairPreview";
+import ResultStep from "./ResultStep";
+import ResultSummary, { type Outcome } from "./ResultSummary";
 import "../styles/ResultsView.css";
 
 type ResultsViewProps = {
@@ -8,20 +11,42 @@ type ResultsViewProps = {
   onCheckAnother: () => void;
 };
 
-function toHex(color: Color): string {
-  return color.toString({ format: "hex", collapse: false }).toLowerCase();
+const STEP_ONE: Record<Outcome, { heading: string; description: string }> = {
+  "all-pass": {
+    heading: "Here’s What’s Working",
+    description:
+      "Your current pair has enough contrast for both larger elements and body-sized text.",
+  },
+  "some-pass": {
+    heading: "Here’s What’s Happening",
+    description:
+      "Your current pair has enough contrast for larger elements, but body-sized text needs a little more separation.",
+  },
+  "none-pass": {
+    heading: "Here’s What’s Happening",
+    description:
+      "Your current pair doesn’t have enough contrast for large elements or body text.",
+  },
+};
+
+function getOutcome(result: PairClassification): Outcome {
+  if (result.AA_body.tier === "as-is") return "all-pass";
+  if (result.AA_large.tier === "as-is") return "some-pass";
+  return "none-pass";
 }
 
-function describeTier(result: PairClassification["AA_body"]): string {
-  switch (result.tier) {
-    case "as-is":
-      return "Passes";
-    case "has-fix":
-      return `Fails — suggested fix: ${toHex(result.nearestPassing)}`;
-    case "no-fix":
-      return "Fails — no fix found";
-  }
-}
+const starIcon = (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 2.5l2.9 5.9 6.6 1-4.8 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5-4.8-4.6 6.6-1z" />
+  </svg>
+);
 
 function ResultsView({ results, onCheckAnother }: ResultsViewProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -30,40 +55,48 @@ function ResultsView({ results, onCheckAnother }: ResultsViewProps) {
     headingRef.current?.focus();
   }, []);
 
+  // Color 1 on Color 2: the first pair where both colors are the user's own.
   const userPair = results.find(
     ({ pair }) => pair.foreground.isBrandColor && pair.background.isBrandColor,
   );
+  if (!userPair) return null;
+
+  const outcome = getOutcome(userPair);
+  const largeTextMeets = userPair.AA_large.tier === "as-is";
 
   return (
-    <section className="results-view" aria-labelledby="results-heading">
-      <h2 id="results-heading" ref={headingRef} tabIndex={-1}>
-        Your results
-      </h2>
+    <div className="results-view">
+      <ResultSummary outcome={outcome} headingRef={headingRef} />
 
-      {userPair && (
-        <dl className="results-view-details">
-          <dt>Colors</dt>
-          <dd>
-            {toHex(userPair.pair.foreground.color)} on{" "}
-            {toHex(userPair.pair.background.color)}
-          </dd>
-          <dt>Contrast ratio</dt>
-          <dd>{userPair.ratio.toFixed(2)}:1</dd>
-          <dt>AA body text</dt>
-          <dd>{describeTier(userPair.AA_body)}</dd>
-          <dt>AA large text</dt>
-          <dd>{describeTier(userPair.AA_large)}</dd>
-        </dl>
-      )}
-
-      <button
-        type="button"
-        className="app-primary-button"
-        onClick={onCheckAnother}
+      <ResultStep
+        marker={outcome === "all-pass" ? starIcon : 1}
+        heading={STEP_ONE[outcome].heading}
+        description={STEP_ONE[outcome].description}
       >
-        Check Another Pair
-      </button>
-    </section>
+        <div className="results-current-pair">
+          <PairPreview
+            first={{ label: "Color 1", color: userPair.pair.foreground.color }}
+            second={{ label: "Color 2", color: userPair.pair.background.color }}
+          />
+          <ContrastDetails
+            ratio={userPair.ratio}
+            regularText={outcome === "all-pass"}
+            largeText={largeTextMeets}
+            uiElements={largeTextMeets}
+          />
+        </div>
+      </ResultStep>
+
+      <div className="results-actions">
+        <button
+          type="button"
+          className="app-primary-button"
+          onClick={onCheckAnother}
+        >
+          Check Another Pair
+        </button>
+      </div>
+    </div>
   );
 }
 

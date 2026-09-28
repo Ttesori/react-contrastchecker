@@ -14,6 +14,16 @@ export function computeContrastRatio(colorA: Color, colorB: Color): number {
   return colorA.contrast(colorB, "WCAG21");
 }
 
+const BLACK = new Color("#000000");
+const WHITE = new Color("#ffffff");
+
+// Returns black or white, whichever is more readable on the given color.
+export function getReadableTextColor(color: Color): string {
+  const contrastWithBlack = computeContrastRatio(color, BLACK);
+  const contrastWithWhite = computeContrastRatio(color, WHITE);
+  return contrastWithWhite > contrastWithBlack ? "#ffffff" : "#000000";
+}
+
 function addMissingHash(value: string): string {
   if (value.startsWith("#") || parseColor(value).valid) {
     return value;

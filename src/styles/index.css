@@ -25,6 +25,7 @@
   /* Semantic */
   --status-warning: #b9985a;
   --status-error: #b3261e;
+  --status-success: #33724c;
 
   /* Supporting information panel */
   --info-panel-bg: rgba(219, 229, 237, 0.05);
@@ -69,6 +70,11 @@ h3 {
 
 :focus-visible {
   outline-color: var(--accent-primary);
+}
+
+/* Headings and other non-interactive elements focused from code, not by the user */
+[tabindex="-1"]:focus {
+  outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

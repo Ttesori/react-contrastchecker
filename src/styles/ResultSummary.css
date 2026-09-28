@@ -1,0 +1,46 @@
+.result-summary {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 47rem;
+  margin: 0 auto;
+  padding: 1.5rem 2.5rem;
+  background-color: var(--surface-input);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md-lg);
+}
+
+.result-summary-icon {
+  flex: none;
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.result-summary-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.result-summary-all-pass .result-summary-icon {
+  color: var(--status-success);
+}
+
+.result-summary-some-pass .result-summary-icon {
+  color: var(--status-warning);
+}
+
+.result-summary-none-pass .result-summary-icon {
+  color: var(--status-error);
+}
+
+.result-summary-headline {
+  font-weight: 400;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.result-summary-headline strong {
+  font-weight: 700;
+}
