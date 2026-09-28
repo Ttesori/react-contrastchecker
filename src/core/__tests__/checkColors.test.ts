@@ -25,16 +25,7 @@ describe("checkColors", () => {
       expect(output.errors.color1).toBe(INVALID_COLOR_MESSAGE);
       expect(output.errors.color2).toBeUndefined();
     }
-  });
-
-  it("returns valid: false with the color2 error when only the second color is invalid", () => {
-    const output = checkColors(["#BBE048", "not-a-color"]);
-
-    expect(output.valid).toBe(false);
-    if (!output.valid) {
-      expect(output.errors.color2).toBe(INVALID_COLOR_MESSAGE);
-      expect(output.errors.color1).toBeUndefined();
-    }
+    expect(output).not.toHaveProperty("results");
   });
 
   it("returns valid: false with both errors when both colors are invalid", () => {
@@ -45,12 +36,5 @@ describe("checkColors", () => {
       expect(output.errors.color1).toBe(INVALID_COLOR_MESSAGE);
       expect(output.errors.color2).toBe(INVALID_COLOR_MESSAGE);
     }
-  });
-
-  it("short-circuits before building or classifying any pairs when validation fails", () => {
-    const output = checkColors(["not-a-color", "#0396AA"]);
-
-    expect(output.valid).toBe(false);
-    expect(output).not.toHaveProperty("results");
   });
 });

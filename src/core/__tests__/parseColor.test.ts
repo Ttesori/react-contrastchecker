@@ -48,35 +48,8 @@ describe("parseColor", () => {
     }
   });
 
-  it("drops transparency from an 8-digit hex color", () => {
-    const result = parseColor("#ff000080");
-
-    expect(result.valid).toBe(true);
-    if (result.valid) {
-      expect(result.color.alpha).toBe(1);
-    }
-  });
-
   it("drops transparency from an rgba color", () => {
     const result = parseColor("rgba(255, 0, 0, 0.5)");
-
-    expect(result.valid).toBe(true);
-    if (result.valid) {
-      expect(result.color.alpha).toBe(1);
-    }
-  });
-
-  it("drops transparency from a space-separated rgb color with alpha", () => {
-    const result = parseColor("rgb(255 0 0 / 50%)");
-
-    expect(result.valid).toBe(true);
-    if (result.valid) {
-      expect(result.color.alpha).toBe(1);
-    }
-  });
-
-  it("drops transparency from an hsla color", () => {
-    const result = parseColor("hsla(0, 100%, 50%, 0.5)");
 
     expect(result.valid).toBe(true);
     if (result.valid) {

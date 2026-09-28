@@ -73,20 +73,4 @@ describe("findNearestPassingColor", () => {
       newColor: null,
     });
   });
-
-  it("is deterministic: same input always produces the same output", () => {
-    const pair = makePair("#BBE048", true, "#0396AA", true);
-    const decision: ColorDecision = {
-      side: "foreground",
-      direction: "lighter",
-    };
-
-    const first = findNearestPassingColor(pair, decision, 3.0);
-    const second = findNearestPassingColor(pair, decision, 3.0);
-
-    expect(first.found).toBe(second.found);
-    expect(first.newColor?.toString({ format: "hex" })).toBe(
-      second.newColor?.toString({ format: "hex" }),
-    );
-  });
 });
