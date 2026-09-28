@@ -143,7 +143,15 @@ Do not apply amber to the entire result heading.
 
 ### Success
 
-Success does not need a bright green treatment. A dark neutral / storm-blue checkmark is acceptable unless testing shows a dedicated success color would improve clarity.
+Use a muted green for the success icon on the "Great news" result.
+
+Current direction:
+
+```css
+--status-success: #33724c;
+```
+
+It shares the error red's lightness and the warning amber's muted saturation (in OKLCH), so the three status colors carry similar visual weight. Success does not need a bright green treatment. Inline pass indicators, such as checkmarks in Contrast Details, stay dark neutral / storm-blue.
 
 Status must never rely on color alone. Icons and text communicate meaning.
 

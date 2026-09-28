@@ -1,7 +1,7 @@
 import { useState, type Ref } from "react";
 import Color from "colorjs.io";
 import { INVALID_COLOR_MESSAGE, parseColor } from "../core/parseColor";
-import { computeContrastRatio, normalizeHex } from "../core/utils";
+import { getReadableTextColor, normalizeHex } from "../core/utils";
 import "../styles/ColorInput.css";
 
 type ColorInputProps = {
@@ -13,18 +13,9 @@ type ColorInputProps = {
   ref?: Ref<HTMLInputElement>;
 };
 
-const BLACK = new Color("#000000");
-const WHITE = new Color("#ffffff");
-
 function resolveColor(value: string): Color {
   const result = parseColor(value);
   return result.valid ? result.color : new Color("#000000");
-}
-
-function getReadableLabelColor(color: Color): string {
-  const contrastWithBlack = computeContrastRatio(color, BLACK);
-  const contrastWithWhite = computeContrastRatio(color, WHITE);
-  return contrastWithWhite > contrastWithBlack ? "#ffffff" : "#000000";
 }
 
 function ColorInput({
@@ -46,7 +37,7 @@ function ColorInput({
   const swatchHex = resolvedColor
     .toString({ format: "hex", collapse: false })
     .toLowerCase();
-  const labelColor = getReadableLabelColor(resolvedColor);
+  const labelColor = getReadableTextColor(resolvedColor);
 
   return (
     <div className="color-input-field">

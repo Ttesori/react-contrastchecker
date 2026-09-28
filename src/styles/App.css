@@ -31,6 +31,24 @@
   margin: 0 0 0.5rem;
 }
 
+.app-results {
+  width: 100%;
+  max-width: 976px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app-brand-on-dark {
+  color: var(--brand-on-dark);
+  margin-bottom: 1.5rem;
+}
+
+.app-card-results {
+  max-width: none;
+  align-items: stretch;
+}
+
 .app-intro {
   font-family: var(--font-body);
   font-size: 1rem;

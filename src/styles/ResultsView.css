@@ -1,30 +1,22 @@
 .results-view {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.results-view h2 {
-  font-size: 1.5rem;
-  color: var(--text-section);
-  margin: 0 0 1.5rem;
-}
-
-.results-view-details {
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 0.5rem 1.5rem;
-  margin: 0 0 2rem;
   text-align: left;
-  color: var(--text-body);
 }
 
-.results-view-details dt {
-  font-weight: 700;
-  color: var(--text-primary);
+.results-current-pair {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
 }
 
-.results-view-details dd {
-  margin: 0;
+.result-step + .result-step,
+.results-actions {
+  border-top: 1px solid var(--border-default);
+}
+
+.results-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
 }
