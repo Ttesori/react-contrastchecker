@@ -2,6 +2,7 @@ import { useState, type Ref } from "react";
 import Color from "colorjs.io";
 import { INVALID_COLOR_MESSAGE, parseColor } from "../core/parseColor";
 import { getReadableTextColor, normalizeHex } from "../core/utils";
+import { PencilIcon } from "./utils/icons";
 import "../styles/ColorInput.css";
 
 type ColorInputProps = {
@@ -64,19 +65,9 @@ function ColorInput({
         >
           Click to edit
         </span>
-        <svg
-          className="color-input-swatch-icon"
-          style={{ color: labelColor }}
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-        </svg>
+        <span className="color-input-swatch-icon" style={{ color: labelColor }}>
+          <PencilIcon />
+        </span>
       </div>
       <label htmlFor={id} className="visually-hidden">
         {label} hex value

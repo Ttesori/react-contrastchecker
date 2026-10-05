@@ -6,7 +6,7 @@ type ResultStepProps = {
   heading: string;
   description: string;
   headingRef?: Ref<HTMLHeadingElement>;
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 function ResultStep({

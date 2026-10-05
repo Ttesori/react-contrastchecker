@@ -1,5 +1,6 @@
 import type Color from "colorjs.io";
 import { getReadableTextColor } from "../core/utils";
+import { toHex } from "./utils/format";
 import "../styles/PairPreview.css";
 
 type PairPreviewColor = {
@@ -11,10 +12,6 @@ type PairPreviewProps = {
   first: PairPreviewColor;
   second: PairPreviewColor;
 };
-
-function toHex(color: Color): string {
-  return color.toString({ format: "hex", collapse: false }).toUpperCase();
-}
 
 function PairPreviewHalf({
   swatch,

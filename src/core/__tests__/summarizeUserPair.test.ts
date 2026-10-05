@@ -36,11 +36,12 @@ describe("summarizeUserPair", () => {
     expect(summary.bodyFix).not.toBeNull();
   });
 
-  it("suggests a full body-text fix below 2:1", () => {
+  it("suggests the large-text fix first below 2:1, keeping the body fix available", () => {
     const summary = summarize("#222222", "#444444"); // ~1.63
 
     expect(summary.state).toBe("big-change");
-    expect(summary.suggestedFix).toBe(summary.bodyFix);
-    expect(summary.suggestedFix?.ratio).toBeGreaterThanOrEqual(4.5);
+    expect(summary.suggestedFix).toBe(summary.largeFix);
+    expect(summary.suggestedFix?.ratio).toBeGreaterThanOrEqual(3);
+    expect(summary.bodyFix).not.toBeNull();
   });
 });
