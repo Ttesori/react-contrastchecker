@@ -1,10 +1,17 @@
 import { useEffect, useRef } from "react";
 import { summarizeUserPair } from "../core/summarizeUserPair";
-import type { PairClassification, ResultState } from "../core/types";
+import type {
+  ColorRole,
+  Fix,
+  PairClassification,
+  ResultState,
+} from "../core/types";
 import ContrastDetails from "./ContrastDetails";
+import FixSuggestion from "./FixSuggestion";
 import PairPreview from "./PairPreview";
 import ResultStep from "./ResultStep";
 import ResultSummary from "./ResultSummary";
+import { StarIcon } from "./utils/icons";
 import "../styles/ResultsView.css";
 
 type ResultsViewProps = {
@@ -34,18 +41,24 @@ const STEP_ONE: Record<ResultState, { heading: string; description: string }> =
     "big-change": NEED_MORE_CONTRAST_STEP,
   };
 
-const starIcon = (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M12 2.5l2.9 5.9 6.6 1-4.8 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5-4.8-4.6 6.6-1z" />
-  </svg>
-);
+const ROLE_LABELS: Record<ColorRole, string> = {
+  color1: "Color 1",
+  color2: "Color 2",
+};
+
+function describeStepTwo(state: ResultState, fix: Fix | null): string {
+  if (!fix) {
+    return "We couldn’t find a nearby color change that adds enough contrast for this pair.";
+  }
+  if (state === "large-only") {
+    return "A small change can make your colors more usable.";
+  }
+  if (state === "big-change") {
+    return "These colors need a bigger change. Here’s a change that works for large text.";
+  }
+  const kept = fix.moves === "color1" ? "color2" : "color1";
+  return `Keep ${ROLE_LABELS[kept]} and use this nearby ${fix.direction} version of ${ROLE_LABELS[fix.moves]}.`;
+}
 
 function ResultsView({ results, onCheckAnother }: ResultsViewProps) {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -57,13 +70,14 @@ function ResultsView({ results, onCheckAnother }: ResultsViewProps) {
   const summary = summarizeUserPair(results);
   const { state } = summary;
   const largeTextMeets = state === "all-pass" || state === "so-close";
+  const fix = summary.suggestedFix;
 
   return (
     <div className="results-view">
       <ResultSummary state={state} headingRef={headingRef} />
 
       <ResultStep
-        marker={state === "all-pass" ? starIcon : 1}
+        marker={state === "all-pass" ? <StarIcon /> : 1}
         heading={STEP_ONE[state].heading}
         description={STEP_ONE[state].description}
       >
@@ -80,6 +94,22 @@ function ResultsView({ results, onCheckAnother }: ResultsViewProps) {
           />
         </div>
       </ResultStep>
+
+      {state !== "all-pass" && (
+        <ResultStep
+          marker={2}
+          heading="Here’s How To Make It Work"
+          description={describeStepTwo(state, fix)}
+        >
+          {fix && (
+            <FixSuggestion
+              fix={fix}
+              color1={summary.color1}
+              color2={summary.color2}
+            />
+          )}
+        </ResultStep>
+      )}
 
       <div className="results-actions">
         <button

@@ -76,7 +76,7 @@ export function summarizeUserPair(results: PairClassification[]): PairSummary {
     "all-pass": null,
     "so-close": bodyFix,
     "large-only": largeFix,
-    "big-change": bodyFix ?? largeFix,
+    "big-change": largeFix ?? bodyFix,
   }[state];
 
   return {
