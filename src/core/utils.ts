@@ -6,6 +6,14 @@ export const RATIOS = {
   AA_large: 3.0,
 };
 
+// Below this starting ratio, any fix is a big change (the "big-change" state).
+export const SMALL_FIX_FLOOR = 2.0;
+
+// WCAG thresholds are minimums: a ratio exactly at the threshold passes.
+export function meetsThreshold(ratio: number, threshold: number): boolean {
+  return ratio >= threshold;
+}
+
 export function isSameColor(a: Color, b: Color): boolean {
   return a.toString({ format: "hex" }) === b.toString({ format: "hex" });
 }
