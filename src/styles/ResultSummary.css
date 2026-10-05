@@ -25,11 +25,12 @@
   color: var(--status-success);
 }
 
-.result-summary-some-pass .result-summary-icon {
+.result-summary-so-close .result-summary-icon {
   color: var(--status-warning);
 }
 
-.result-summary-none-pass .result-summary-icon {
+.result-summary-large-only .result-summary-icon,
+.result-summary-big-change .result-summary-icon {
   color: var(--status-error);
 }
 

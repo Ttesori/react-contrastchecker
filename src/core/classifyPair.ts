@@ -1,5 +1,5 @@
 import type { ColorPair, PairClassification } from "./types";
-import { computeContrastRatio, RATIOS } from "./utils";
+import { computeContrastRatio, meetsThreshold, RATIOS } from "./utils";
 import { decideColorMove } from "./colorDecision";
 import { findNearestPassingColor } from "./findNearestPassingColor";
 
@@ -13,6 +13,7 @@ export function classifyPair(pair: ColorPair): PairClassification {
   const result: PairClassification = {
     ratio,
     pair,
+    decision,
     AA_body: { tier: "no-fix" },
     AA_large: { tier: "no-fix" },
   };
@@ -20,7 +21,7 @@ export function classifyPair(pair: ColorPair): PairClassification {
   // Test ratio against our thresholds
   for (const ratioName of Object.keys(RATIOS) as (keyof typeof RATIOS)[]) {
     // If ratio already passes, return as-is
-    if (ratio > RATIOS[ratioName]) {
+    if (meetsThreshold(ratio, RATIOS[ratioName])) {
       result[ratioName] = { tier: "as-is" };
     } else {
       // Otherwise search for passing color

@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import Color from "colorjs.io";
 import { classifyPair } from "../classifyPair";
+import { meetsThreshold } from "../utils";
 import type { ColorPair } from "../types";
 
 function makePair(
@@ -31,6 +32,10 @@ describe("classifyPair", () => {
     const result = classifyPair(pair);
 
     expect(result.AA_large).toEqual({ tier: "as-is" });
+    expect(result.decision).toEqual({
+      side: "foreground",
+      direction: "darker",
+    });
     expect(result.AA_body.tier).toBe("has-fix");
     if (result.AA_body.tier === "has-fix") {
       expect(result.AA_body.nearestPassing.toString({ format: "hex" })).toBe(
@@ -54,12 +59,8 @@ describe("classifyPair", () => {
     expect(result.AA_body).toEqual({ tier: "no-fix" });
   });
 
-  it("finds no fix at either threshold when the pair starts below the floor", () => {
-    // your own verified pair from findNearestPassingColor.spec.ts, ratio ~1.28
-    const pair = makePair("#777777", true, "#666666", true);
-    const result = classifyPair(pair);
-
-    expect(result.AA_body).toEqual({ tier: "no-fix" });
-    expect(result.AA_large).toEqual({ tier: "no-fix" });
+  it("counts a ratio exactly at a threshold as passing", () => {
+    expect(meetsThreshold(4.5, 4.5)).toBe(true);
+    expect(meetsThreshold(4.49, 4.5)).toBe(false);
   });
 });

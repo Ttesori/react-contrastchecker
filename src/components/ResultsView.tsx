@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import type { PairClassification } from "../core/types";
+import { summarizeUserPair } from "../core/summarizeUserPair";
+import type { PairClassification, ResultState } from "../core/types";
 import ContrastDetails from "./ContrastDetails";
 import PairPreview from "./PairPreview";
 import ResultStep from "./ResultStep";
-import ResultSummary, { type Outcome } from "./ResultSummary";
+import ResultSummary from "./ResultSummary";
 import "../styles/ResultsView.css";
 
 type ResultsViewProps = {
@@ -11,29 +12,27 @@ type ResultsViewProps = {
   onCheckAnother: () => void;
 };
 
-const STEP_ONE: Record<Outcome, { heading: string; description: string }> = {
-  "all-pass": {
-    heading: "Here’s What’s Working",
-    description:
-      "Your current pair has enough contrast for both larger elements and body-sized text.",
-  },
-  "some-pass": {
-    heading: "Here’s What’s Happening",
-    description:
-      "Your current pair has enough contrast for larger elements, but body-sized text needs a little more separation.",
-  },
-  "none-pass": {
-    heading: "Here’s What’s Happening",
-    description:
-      "Your current pair doesn’t have enough contrast for large elements or body text.",
-  },
+const NEED_MORE_CONTRAST_STEP = {
+  heading: "Here’s What’s Happening",
+  description:
+    "Your current pair doesn’t have enough contrast for large elements or body text.",
 };
 
-function getOutcome(result: PairClassification): Outcome {
-  if (result.AA_body.tier === "as-is") return "all-pass";
-  if (result.AA_large.tier === "as-is") return "some-pass";
-  return "none-pass";
-}
+const STEP_ONE: Record<ResultState, { heading: string; description: string }> =
+  {
+    "all-pass": {
+      heading: "Here’s What’s Working",
+      description:
+        "Your current pair has enough contrast for both larger elements and body-sized text.",
+    },
+    "so-close": {
+      heading: "Here’s What’s Happening",
+      description:
+        "Your current pair has enough contrast for larger elements, but body-sized text needs a little more separation.",
+    },
+    "large-only": NEED_MORE_CONTRAST_STEP,
+    "big-change": NEED_MORE_CONTRAST_STEP,
+  };
 
 const starIcon = (
   <svg
@@ -55,32 +54,27 @@ function ResultsView({ results, onCheckAnother }: ResultsViewProps) {
     headingRef.current?.focus();
   }, []);
 
-  // Color 1 on Color 2: the first pair where both colors are the user's own.
-  const userPair = results.find(
-    ({ pair }) => pair.foreground.isBrandColor && pair.background.isBrandColor,
-  );
-  if (!userPair) return null;
-
-  const outcome = getOutcome(userPair);
-  const largeTextMeets = userPair.AA_large.tier === "as-is";
+  const summary = summarizeUserPair(results);
+  const { state } = summary;
+  const largeTextMeets = state === "all-pass" || state === "so-close";
 
   return (
     <div className="results-view">
-      <ResultSummary outcome={outcome} headingRef={headingRef} />
+      <ResultSummary state={state} headingRef={headingRef} />
 
       <ResultStep
-        marker={outcome === "all-pass" ? starIcon : 1}
-        heading={STEP_ONE[outcome].heading}
-        description={STEP_ONE[outcome].description}
+        marker={state === "all-pass" ? starIcon : 1}
+        heading={STEP_ONE[state].heading}
+        description={STEP_ONE[state].description}
       >
         <div className="results-current-pair">
           <PairPreview
-            first={{ label: "Color 1", color: userPair.pair.foreground.color }}
-            second={{ label: "Color 2", color: userPair.pair.background.color }}
+            first={{ label: "Color 1", color: summary.color1 }}
+            second={{ label: "Color 2", color: summary.color2 }}
           />
           <ContrastDetails
-            ratio={userPair.ratio}
-            regularText={outcome === "all-pass"}
+            ratio={summary.ratio}
+            regularText={state === "all-pass"}
             largeText={largeTextMeets}
             uiElements={largeTextMeets}
           />

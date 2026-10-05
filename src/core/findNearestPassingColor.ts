@@ -1,5 +1,6 @@
 import Color from "colorjs.io";
 import type { ColorPair, ColorDecision } from "./types";
+import { meetsThreshold } from "./utils";
 
 export type SearchResult =
   { found: true; newColor: Color } | { found: false; newColor: null };
@@ -13,11 +14,6 @@ export function findNearestPassingColor(
   const movingSide: Color = new Color(pair[decision.side].color);
   const anchorSide: Color =
     pair[decision.side === "background" ? "foreground" : "background"].color;
-
-  // Check initial ratio, if too low return false
-  if (movingSide.contrast(anchorSide, "WCAG21") < 2) {
-    return { found: false, newColor: null };
-  }
 
   const STEP: number = decision.direction === "lighter" ? 0.005 : -0.005; // fixed step size
   const lightness = movingSide.get("oklch.l"); // Current lightness
@@ -40,7 +36,7 @@ export function findNearestPassingColor(
     const currentRatio = newColor.contrast(anchorSide, "WCAG21"); // check new ratio
 
     // If current ratio is greater than target ratio, return colors
-    if (currentRatio >= targetRatio) {
+    if (meetsThreshold(currentRatio, targetRatio)) {
       return {
         found: true,
         newColor: newColor,

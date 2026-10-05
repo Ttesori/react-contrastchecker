@@ -1,14 +1,32 @@
 import type { ReactNode, Ref } from "react";
+import type { ResultState } from "../core/types";
 import "../styles/ResultSummary.css";
 
-export type Outcome = "all-pass" | "some-pass" | "none-pass";
-
 type ResultSummaryProps = {
-  outcome: Outcome;
+  state: ResultState;
   headingRef?: Ref<HTMLHeadingElement>;
 };
 
-const HEADLINES: Record<Outcome, ReactNode> = {
+const NEED_MORE_CONTRAST = (
+  <>
+    Your colors <strong>need more contrast.</strong>
+  </>
+);
+
+const FAIL_ICON = (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="M15 9l-6 6M9 9l6 6" />
+  </svg>
+);
+
+const HEADLINES: Record<ResultState, ReactNode> = {
   "all-pass": (
     <>
       <strong>Great news!</strong> Your colors work for{" "}
@@ -16,21 +34,18 @@ const HEADLINES: Record<Outcome, ReactNode> = {
       <strong>regular text.</strong>
     </>
   ),
-  "some-pass": (
+  "so-close": (
     <>
       <strong>So close!</strong> Your colors work for{" "}
       <strong>large text</strong> and <strong>UI elements</strong>, but{" "}
       <strong>not</strong> regular text.
     </>
   ),
-  "none-pass": (
-    <>
-      Your colors <strong>need more contrast.</strong>
-    </>
-  ),
+  "large-only": NEED_MORE_CONTRAST,
+  "big-change": NEED_MORE_CONTRAST,
 };
 
-const ICONS: Record<Outcome, ReactNode> = {
+const ICONS: Record<ResultState, ReactNode> = {
   "all-pass": (
     <svg viewBox="0 0 24 24">
       <circle cx="12" cy="12" r="11" fill="currentColor" />
@@ -44,7 +59,7 @@ const ICONS: Record<Outcome, ReactNode> = {
       />
     </svg>
   ),
-  "some-pass": (
+  "so-close": (
     <svg viewBox="0 0 24 24">
       <path
         d="M10.3 3.2a2 2 0 0 1 3.4 0l8.6 15a2 2 0 0 1-1.7 3H3.4a2 2 0 0 1-1.7-3z"
@@ -59,32 +74,22 @@ const ICONS: Record<Outcome, ReactNode> = {
       <circle cx="12" cy="17.5" r="1.4" fill="#ffffff" />
     </svg>
   ),
-  "none-pass": (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M15 9l-6 6M9 9l6 6" />
-    </svg>
-  ),
+  "large-only": FAIL_ICON,
+  "big-change": FAIL_ICON,
 };
 
-function ResultSummary({ outcome, headingRef }: ResultSummaryProps) {
+function ResultSummary({ state, headingRef }: ResultSummaryProps) {
   return (
-    <div className={`result-summary result-summary-${outcome}`}>
+    <div className={`result-summary result-summary-${state}`}>
       <span className="result-summary-icon" aria-hidden="true">
-        {ICONS[outcome]}
+        {ICONS[state]}
       </span>
       <h2
         ref={headingRef}
         tabIndex={headingRef ? -1 : undefined}
         className="result-summary-headline"
       >
-        {HEADLINES[outcome]}
+        {HEADLINES[state]}
       </h2>
     </div>
   );

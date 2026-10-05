@@ -16,17 +16,19 @@ function makePair(
 }
 
 describe("findNearestPassingColor", () => {
-  it("returns found: false with no color for a pair below the 2.0 floor, without running the scan", () => {
+  it("finds a passing color even when the pair starts below 2:1", () => {
     const pair = makePair("#777777", true, "#666666", true); // starting ratio ~1.28
     const decision: ColorDecision = {
       side: "foreground",
       direction: "lighter",
     };
 
-    expect(findNearestPassingColor(pair, decision, 3.0)).toEqual({
-      found: false,
-      newColor: null,
-    });
+    const result = findNearestPassingColor(pair, decision, 3.0);
+
+    expect(result.found).toBe(true);
+    expect(
+      result.newColor!.contrast(pair.background.color, "WCAG21"),
+    ).toBeGreaterThanOrEqual(3.0);
   });
 
   it("finds a passing color for a normal fix", () => {
